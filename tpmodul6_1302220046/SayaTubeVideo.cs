@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
 
 class SayaTubeVideo
 {
@@ -10,6 +11,9 @@ class SayaTubeVideo
 
     public SayaTubeVideo(string judul)
     {
+        Contract.Assert(judul.Length < 100);
+        Contract.Assert(!string.IsNullOrEmpty(judul));
+
         Random random = new Random();
         this.id = random.Next(10000, 99999);
         this.title = judul;
@@ -18,9 +22,19 @@ class SayaTubeVideo
 
     public void IncreasePlayCount(int playCount)
     {
+        Contract.Assert(playCount <= 10000000);
+        try
+        {
+            checked
+            {
                 this.playCount += playCount;
-            
+            }
 
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Playcount terlalu besar");
+        }
 
 
 
